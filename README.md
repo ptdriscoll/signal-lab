@@ -1,8 +1,6 @@
 # SignalLab
 
-SignalLab is an experimental data pipeline for exploring relationships between market signals and external factors such as weather.
-
-It provides a modular framework for ingesting, transforming, and analyzing time-series signals with a focus on reproducibility and extensibility.
+SignalLab is an experimental data pipeline for exploring relationships between market signals and external factors such as weather. It provides a modular framework for ingesting, transforming, and analyzing time-series signals with a focus on reproducibility and extensibility.
 
 ## Current Experiment
 
@@ -16,15 +14,11 @@ This first iteration explores:
 
 ## Example Outputs
 
-### Rolling Correlation (Weather vs SP500)
-
 ![Rolling Correlation](images/Rolling-Correlation-Weather-vs-SP500.png)
-
-### Market Response Around Weather Extremes
 
 ![Event Study](images/Market-Response-Around-Weather-Expremes.png)
 
-## 🚀 Getting Started
+## Getting Started
 
 You can run SignalLab using either Conda or standard Python.
 
@@ -79,7 +73,3 @@ This is an early research prototype. Results are exploratory and not predictive.
 - News sentiment integration
 - Multi-region weather signals
 - Event-based modeling improvements
-
-```
-
-```
