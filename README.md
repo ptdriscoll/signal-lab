@@ -51,7 +51,7 @@ Install package and run:
 
 ```bash
 pip install -e .
-python scripts/run_pipeline.py
+python scripts/001_weather_sp500.py
 ```
 
 ## Structure
