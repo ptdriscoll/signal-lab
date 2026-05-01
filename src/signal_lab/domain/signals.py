@@ -4,14 +4,12 @@ class Signal:
     def __init__(self, name: str, df: pd.DataFrame):
         self.name = name
         self.df = df.copy()
-
         self._validate()
 
     def _validate(self):
         required = {'date', 'value'}
         if not required.issubset(self.df.columns):
             raise ValueError(f'{self.name} missing required columns')
-
         self.df['date'] = pd.to_datetime(self.df['date'])
         self.df = self.df.sort_values('date')
 

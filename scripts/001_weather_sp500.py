@@ -8,9 +8,12 @@ data = ingest()
 signals = process(data)
 df = align_signals(signals)
 df = add_lags(df)
-df = add_rolling_corr(df)
+df = add_rolling_corr(df, 'sp500', 'weather')
 
-corr = compute(df)
+#corr = compute(df, 'sp500', 'weather')
+#print(corr)
+
+corr = df.corr()
 print(corr['sp500'])
 
 plot_rolling_corr(df)

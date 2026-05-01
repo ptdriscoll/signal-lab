@@ -8,24 +8,24 @@ def align_signals(signals):
 
     return df.dropna()
 
-def add_lags(df):
+def add_lags(df, columns=None, lags=(1, 2)):
     df = df.copy()
 
-    df['sp500_lag_1'] = df['sp500'].shift(1)
-    df['weather_lag_1'] = df['weather'].shift(1)
+    columns = columns or df.columns
 
-    df['sp500_lag_2'] = df['sp500'].shift(2)
-    df['weather_lag_2'] = df['weather'].shift(2)
+    for col in columns:
+        for lag in lags:
+            df[f'{col}_lag_{lag}'] = df[col].shift(lag)
 
     return df
     
-def add_rolling_corr(df, window=30):
+def add_rolling_corr(df, col_a, col_b, window=30):
     df = df.copy()
 
     df['rolling_corr'] = (
-        df['sp500']
+        df[col_a]
         .rolling(window)
-        .corr(df['weather'])
+        .corr(df[col_b])
     )
 
-    return df    
+    return df  
