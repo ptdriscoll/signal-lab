@@ -2,9 +2,9 @@
 
 SignalLab is an experimental data pipeline for exploring relationships between market signals and external factors such as weather. It provides a modular framework for ingesting, transforming, and analyzing time-series signals with a focus on reproducibility and extensibility. This is an early research prototype. Results are exploratory and not predictive.
 
-## Current Experiment
+## Example Experiment
 
-This first iteration explores:
+The first iteration explores:
 
 - S&P 500 market movements
 - Weather anomaly signals
