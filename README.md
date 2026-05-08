@@ -12,10 +12,10 @@ The first iteration explores:
 - Rolling correlation
 - Event-based market response to weather extremes
 
-## Example Outputs
+## Experiment 001 Outputs
 
-![Rolling Correlation](images/Rolling-Correlation-Weather-vs-SP500.png)
-![Event Study](images/Market-Response-Around-Weather-Expremes.png)
+![Rolling Correlation](images/rolling_corr.png)
+![Event Study](images/weather_extremes.png)
 
 ## Getting Started
 

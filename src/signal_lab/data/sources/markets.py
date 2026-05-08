@@ -1,35 +1,23 @@
 import yfinance as yf
 import pandas as pd
 
-def fetch_sp500():
-    df = yf.download('^GSPC', period='2y')
 
-    df = df.reset_index()[['Date', 'Close']]
-    df.columns = ['date', 'value']
+def fetch_market(ticker, start_date=None, end_date=None, period=None):
+    if period:
+        df = yf.download(ticker, period=period, progress=False)
+    else:
+        df = yf.download(
+            ticker,
+            start=start_date,
+            end=end_date,
+            progress=False
+        )
 
-    # convert to returns
-    df['value'] = df['value'].pct_change()
-    
-    # now convert to volatility signal
-    df['value'] = df['value'].rolling(7).std()
-
-    return df.dropna()
-
-def get_stock(ticker: str):
-    df = yf.download(ticker, progress=False)
-
-    # check whether empty or invalid
     if df is None or df.empty or 'Close' not in df.columns:
         return None
 
-    df = df[['Close']].copy()
-    df['value'] = df['Close'].pct_change()
-    
-    df = df[['value']].dropna()
-    df.index = pd.to_datetime(df.index)
-
-    df = df.reset_index()
+    df = df.reset_index()[['Date', 'Close']]
     df.columns = ['date', 'value']
+    df['date'] = pd.to_datetime(df['date'])
 
     return df
-    

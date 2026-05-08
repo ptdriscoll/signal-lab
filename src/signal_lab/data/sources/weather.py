@@ -1,32 +1,22 @@
-# data/sources/weather.py
-
 import requests
 import pandas as pd
 
-def fetch_weather():
+
+def fetch_weather(lat, lon, start_date, end_date):
     url = 'https://archive-api.open-meteo.com/v1/archive'
 
     params = {
-        'latitude': 40.71,   # New York
-        'longitude': -74.01,
-        'start_date': '2023-01-01',
-        'end_date': '2024-12-31',
+        'latitude': lat,
+        'longitude': lon,
+        'start_date': start_date,
+        'end_date': end_date,
         'daily': 'temperature_2m_mean',
         'timezone': 'UTC'
     }
 
     res = requests.get(url, params=params).json()
 
-    df = pd.DataFrame({
-        'date': res['daily']['time'],
+    return pd.DataFrame({
+        'date': pd.to_datetime(res['daily']['time']),
         'value': res['daily']['temperature_2m_mean']
     })
-
-    # simple deviation (baseline = mean)
-    df['value'] = df['value'] - df['value'].mean()
-    
-    # now convert to extreme event signal
-    df['value'] = (df['value'].abs() > df['value'].std()).astype(int)
-
-    return df
-    

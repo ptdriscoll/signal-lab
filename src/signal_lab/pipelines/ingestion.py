@@ -1,16 +1,16 @@
-from signal_lab.data.sources.markets import fetch_sp500
+from signal_lab.data.sources.markets import fetch_market
 from signal_lab.data.sources.weather import fetch_weather
 
-def run(include=None):
-    include = include or ['sp500', 'weather']
 
+def run(config):
     data = {}
 
-    if 'sp500' in include:
-        data['sp500'] = fetch_sp500()
+    for name, params in config.items():
 
-    if 'weather' in include:
-        data['weather'] = fetch_weather()
+        if name == 'weather':
+            data[name] = fetch_weather(**params)
+
+        if name == 'market':
+            data[name] = fetch_market(**params)
 
     return data
-    
