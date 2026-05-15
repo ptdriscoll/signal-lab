@@ -22,6 +22,20 @@ def to_mean_deviation(df, column='value'):
     df = df.copy()
     df[column] = df[column] - df[column].mean()
     return df
+    
+def to_seasonal_mean_deviation(df, column='value', date_col='date', group='month'):
+    """Subtracts local seasonal average from a column instead of a global average."""
+    df = df.copy()
+    
+    # ensure dates are in correct format and extract calendar month
+    df[date_col] = pd.to_datetime(df[date_col])
+    df['_temp_month'] = df[date_col].dt.month
+    
+    # subtract monthly average from target column
+    df[column] = df[column] - df.groupby('_temp_month')[column].transform('mean')
+    
+    # drop temporary column before returning
+    return df.drop(columns=['_temp_month'])    
 
 def to_extreme_signal(df, column='value', threshold='std'):
     """Uses 0 and 1 to flag whether each row is outside deviation.""" 

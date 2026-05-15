@@ -6,6 +6,7 @@ from signal_lab.config.exp_002_weather_top100_scan import DATA, MARKET, TOP_TICK
 import os
 import pandas as pd
 from signal_lab.pipelines.features import (
+    to_seasonal_mean_deviation,
     align_signals,
     add_lags,
     add_rolling_corr,
@@ -13,8 +14,8 @@ from signal_lab.pipelines.features import (
 )
 
 def run():
-    weather_signals = ingest(DATA)
-    weather = weather_signals['weather']
+    data = ingest(DATA) 
+    weather = to_seasonal_mean_deviation(data['weather'], column='value')
 
     results = []
     for ticker in TOP_TICKERS:
