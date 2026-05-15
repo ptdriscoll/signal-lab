@@ -30,5 +30,13 @@ print(corr['market'])
 output_dir = 'outputs/001_weather_sp500'
 os.makedirs(output_dir, exist_ok=True)
 
-plot_rolling_corr(df, save_path=f'{output_dir}/rolling_corr.png', title='Rolling Correlation: Weather vs SP500')
-plot_event_study(df, save_path=f'{output_dir}/weather_extremes.png', title='Market Response Around Weather Extremes')
+rolling_title='Rolling Correlation: Weather vs SP500'
+rolling_plot_path = f'{output_dir}/rolling_corr.png'
+rolling_csv_path = f'{output_dir}/rolling_corr.csv'
+
+event_title = 'Market Response Around Weather Extremes'
+event_plot_path = f'{output_dir}/weather_extremes.png'
+event_csv_path = f'{output_dir}/weather_extremes.csv'
+
+plot_rolling_corr(df, title=rolling_title, save_path=rolling_plot_path, csv_path=rolling_csv_path)
+plot_event_study(df, title=event_title, save_path=event_plot_path, csv_path=event_csv_path)

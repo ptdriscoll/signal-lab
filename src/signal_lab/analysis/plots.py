@@ -1,8 +1,15 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 
-def plot_rolling_corr(df, col='rolling_corr', title='Rolling Correlation', save_path=None):
+def plot_rolling_corr(
+    df, 
+    col='rolling_corr', 
+    title='Rolling Correlation', 
+    save_path=None, 
+    csv_path=None
+):
     """Generates a line chart of specified column, and includes baseline marker."""
     plt.figure()
 
@@ -19,6 +26,9 @@ def plot_rolling_corr(df, col='rolling_corr', title='Rolling Correlation', save_
 
     plt.show()
     plt.close()
+    
+    if csv_path:
+        df.to_csv(csv_path)
 
 def plot_event_study(
     df,
@@ -26,7 +36,8 @@ def plot_event_study(
     target_col='market',
     window=5,
     title='Event Study',
-    save_path=None
+    save_path=None,
+    csv_path=None
 ):
     """
     Plots the average percentage change of a target metric surrounding an event.
@@ -67,10 +78,9 @@ def plot_event_study(
     Day +2       | -0.1             |  0.3             |  0.10
     """
     df = df.reset_index(drop=True)
-
     results = []
 
-    #check for pre-computed binary signals
+    # check for pre-computed binary signals
     is_binary = set(df[signal_col].dropna().unique()).issubset({0, 1, 0.0, 1.0})    
     if is_binary:
         events = df[df[signal_col] == 1].index.tolist()
@@ -81,27 +91,30 @@ def plot_event_study(
     for e in events:
         if e - window < 0 or e + window >= len(df):
             continue
-
         slice_ = df.iloc[e-window:e+window+1][target_col].values
         results.append(slice_)
 
     if not results:
-        print('No events found')
+        print('No events found. Plot and CSV skipped.')
         return
 
+    relative_days = list(range(-window, window+1))
     avg = np.mean(results, axis=0)
 
     plt.figure()
-    plt.plot(range(-window, window+1), avg)
-
+    plt.plot(relative_days, avg)
     plt.title(title)
     plt.xlabel('Days Around Event')
     plt.ylabel(f'Average {target_col} Move')
-
     plt.axhline(0, linewidth=1)
-
     if save_path:
         plt.savefig(save_path, bbox_inches='tight')
-
     plt.show()
-    plt.close()    
+    plt.close()   
+    
+    if csv_path:
+        event_df = pd.DataFrame({
+            'Days_Around_Event': relative_days,
+            f'Average_{target_col}_Move': avg
+        }).set_index('Days_Around_Event')
+        event_df.to_csv(csv_path) 
