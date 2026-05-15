@@ -14,11 +14,11 @@ from signal_lab.pipelines.features import (
 
 data = ingest(DATA)
 
-data['weather'] = to_mean_deviation(data['weather'])
-data['weather'] = to_extreme_signal(data['weather'])
+data['weather'] = to_mean_deviation(data['weather'], column='value')
+data['weather'] = to_extreme_signal(data['weather'], column='value', threshold='std')
 
-data['market'] = to_returns(data['market'])
-data['market'] = to_rolling_volatility(data['market'], window=7)
+data['market'] = to_returns(data['market'], column='value')
+data['market'] = to_rolling_volatility(data['market'], column='value', window=7)
 
 df = align_signals(data)
 df = add_lags(df)
